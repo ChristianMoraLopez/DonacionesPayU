@@ -1,5 +1,5 @@
-# Usa la imagen base oficial de PHP con Apache y PHP 8.1
-FROM php:8.1-apache
+# Usa la imagen base oficial de PHP con Apache y PHP 8.2
+FROM php:8.2-apache
 
 # Instala Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
