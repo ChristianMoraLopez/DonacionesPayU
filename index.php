@@ -44,18 +44,14 @@ foreach ($payment_methods as $payment_method) {
     $payment_method->id;
 }
 ?>
-
 <!DOCTYPE html>
-<html lang = "es">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="Donaciones">
     <meta name="keywords" content="donaciones, payu, pagos">
-    <script src="./html2canvas.min.js"></script>
-    <script src="./disintegrate.js"></script>
-<head>
     <title>Donaciones</title>
     <style>
         body {
@@ -71,92 +67,129 @@ foreach ($payment_methods as $payment_method) {
         form {
             background-color: #fff;
             padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
         }
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            font-weight: bold;
         }
         input[type="text"],
         input[type="email"],
         input[type="number"],
         select,
         button {
-            width: 100%;
+            width: calc(100% - 22px);
             padding: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
             box-sizing: border-box;
+            font-size: 16px;
+            outline: none;
+        }
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        button:focus {
+            border-color: #007bff;
         }
         button {
             background-color: #007bff;
             color: #fff;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
         button:hover {
             background-color: #0056b3;
         }
-
-        #img{
-           display: none;
+        .donate-real {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .donate-real img {
+            max-width: 250px;
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        .donate-real p {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+        #hora_actual {
+            margin-top: 20px;
+            font-size: 14px;
+            text-align: center;
+        }
+        #img {
+            display: none;
             height: 100px;
             width: 100px;
             background-image: url('https://christianmoralopez.github.io/images/Logo3White.svg');
             background-size: cover;
             background-position: center;
         }
-
     </style>
 </head>
 <body>
     <form action="src/procesar_pago.php" method="POST">
         <label for="nombre_completo">Nombre Completo:</label>
-        <input type="text" id="nombre_completo" name="nombre_completo" required><br>
+        <input type="text" id="nombre_completo" name="nombre_completo" required>
+        
         <label for="correo">Correo:</label>
-        <input type="email" id="correo" name="correo" required><br>
+        <input type="email" id="correo" name="correo" required>
+        
         <label for="telefono">Teléfono:</label>
-        <input type="text" id="telefono" name="telefono" required><br>
+        <input type="text" id="telefono" name="telefono" required>
+        
         <label for="monto">Monto:</label>
-        <input type="number" id="monto" name="monto" required><br>
+        <input type="number" id="monto" name="monto" required>
+        
         <label for="banco">Banco:</label>
         <select id="banco" name="banco" required>
             <?php echo $options; ?>
         </select>
-        <!-- Mostrar la hora actual -->
+        
+        <button type="submit">Donación Ficticia</button>
+        
+        <div class="donate-real">
+            <a href="https://biz.payulatam.com/B0f65017F0BD626" target="_blank">
+                <img src="https://ecommerce.payulatam.com/img-secure-2015/boton_pagar_mediano.png" alt="Botón de Donación Real">
+            </a>
+            <p>¡Haz una diferencia real con tu donación!</p>
+        </div>
+        
         <p id="hora_actual"></p>
-        <button type="submit">Donar</button>
-        <a href="https://biz.payulatam.com/B0f65017F0BD626"><img src="https://ecommerce.payulatam.com/img-secure-2015/boton_pagar_mediano.png"></a>
-        <img  id="img" data-dis-type="simultaneous">
+        
+        <img id="img" data-dis-type="simultaneous">
     </form>
 
-    <!-- Script para actualizar la hora -->
     <script>
-
         disintegrate.init();
-    function actualizarHora() {
-        var ahora = new Date();
-        var horas = ahora.getHours().toString().padStart(2, '0');
-        var minutos = ahora.getMinutes().toString().padStart(2, '0');
-        var segundos = ahora.getSeconds().toString().padStart(2, '0');
-        var horaActual = horas + ':' + minutos + ':' + segundos;
+        function actualizarHora() {
+            var ahora = new Date();
+            var horas = ahora.getHours().toString().padStart(2, '0');
+            var minutos = ahora.getMinutes().toString().padStart(2, '0');
+            var segundos = ahora.getSeconds().toString().padStart(2, '0');
+            var horaActual = horas + ':' + minutos + ':' + segundos;
 
-        document.getElementById('hora_actual').textContent = 'Hora actual: ' + horaActual;
-       
-    }
+            document.getElementById('hora_actual').textContent = 'Hora actual: ' + horaActual;
+        }
 
-    
+        document.getElementById('img').addEventListener('click', e => {
+            const disObj = disintegrate.getDisObj(e.target);
+            disintegrate.createSimultaneousParticles(disObj);
+        });
 
-    document.getElementById('img').addEventListener('click', e => {
-        const disObj = disintegrate.getDisObj(e.target);
-        disintegrate.createSimultaneousParticles(disObj);
-    });
-
-    // Actualizar la hora cada segundo
-    setInterval(actualizarHora, 1000);
-</script>
-
-
+        setInterval(actualizarHora, 1000);
+    </script>
 </body>
 </html>
+
