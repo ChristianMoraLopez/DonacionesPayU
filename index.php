@@ -54,6 +54,7 @@ foreach ($payment_methods as $payment_method) {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="Donaciones">
     <meta name="keywords" content="donaciones, payu, pagos">
+    <link rel="shortcut icon" href="https://christianmoralopez.github.io/images/logo.svg" />
     <title>Donaciones</title>
     <style>
         body {
