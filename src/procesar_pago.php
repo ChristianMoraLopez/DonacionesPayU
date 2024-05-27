@@ -1,6 +1,6 @@
 <?php
 require_once '../lib/PayU.php';
-require_once '../vendor/autoload.php';
+
 
 // Configuración de credenciales de producción proporcionadas por PayU
 PayU::$apiKey = "4Vj8eK4rloUd272L48hsrarnUA"; // API Key de producción
