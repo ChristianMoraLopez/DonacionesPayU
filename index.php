@@ -58,7 +58,7 @@ foreach ($payment_methods as $payment_method) {
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #00101f; /* Color de fondo oscuro */
+            background-color: #000; /* Fondo oscuro */
             margin: 0;
             padding: 0;
             display: flex;
@@ -66,6 +66,7 @@ foreach ($payment_methods as $payment_method) {
             align-items: center;
             height: 100vh;
             overflow: hidden; /* Evita el desplazamiento vertical */
+            perspective: 1000px; /* Perspectiva para las animaciones 3D */
         }
         form {
             background-color: rgba(255, 255, 255, 0.1); /* Fondo semitransparente */
@@ -75,12 +76,15 @@ foreach ($payment_methods as $payment_method) {
             max-width: 400px;
             width: 100%;
             position: relative; /* Posicionamiento relativo para el reloj */
+            transform-style: preserve-3d; /* Conservar la perspectiva en los elementos hijos */
+            animation: floatForm 10s linear infinite alternate; /* Animación de flotar */
         }
         label {
             display: block;
             margin-bottom: 10px;
             font-weight: bold;
             color: #fff; /* Color del texto */
+            animation: fadeIn 2s ease-in-out; /* Animación de aparición */
         }
         input[type="text"],
         input[type="email"],
@@ -97,12 +101,15 @@ foreach ($payment_methods as $payment_method) {
             outline: none;
             color: #333; /* Color del texto */
             background-color: #f0f0f0; /* Color de fondo del formulario */
+            transition: transform 0.5s; /* Transición al enfocar */
+            animation: slideIn 2s ease-in-out; /* Animación de deslizamiento */
         }
         input[type="text"]:focus,
         input[type="email"]:focus,
         input[type="number"]:focus,
         select:focus,
         button:focus {
+            transform: scale(1.1); /* Escala al enfocar */
             border-color: #007bff; /* Color del borde al enfocar */
         }
         button {
@@ -110,6 +117,7 @@ foreach ($payment_methods as $payment_method) {
             color: #fff;
             cursor: pointer;
             transition: background-color 0.3s;
+            animation: pulse 2s 3 alternate; /* Animación de pulso */
         }
         button:hover {
             background-color: #0056b3;
@@ -135,36 +143,42 @@ foreach ($payment_methods as $payment_method) {
             font-size: 24px; /* Tamaño de fuente grande */
             text-align: center;
             color: #fff; /* Color del texto */
-            position: relative; /* Posicionamiento relativo para los efectos */
-            overflow: hidden; /* Evita que el texto salga fuera del contenedor */
             font-weight: bold;
-        }
-        #hora_actual::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(to right, #007bff, #00ff00, #ff0000); /* Degradado de colores */
-            top: 50%;
-            left: 0;
-            animation: wave 2s linear infinite; /* Animación de onda */
-            transform: translateY(-50%);
-        }
-        @keyframes wave {
-            0% {
-                left: -100%; /* Comienza fuera del contenedor */
-            }
-            100% {
-                left: 100%; /* Termina fuera del contenedor */
-            }
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8); /* Sombra al texto */
+            animation: fadeIn 2s ease-in-out; /* Animación de aparición */
         }
         #img {
-            display: none;
-            height: 100px;
-            width: 100px;
-            background-image: url('https://christianmoralopez.github.io/images/Logo3White.svg');
-            background-size: cover;
-            background-position: center;
+            max-width: 150px;
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            animation: rotateImg 10s linear infinite; /* Animación de rotación */
+            filter: hue-rotate(180deg) brightness(150%) saturate(150%); /* Filtros de imagen */
+            mix-blend-mode: screen; /* Modo de mezcla para efecto de pantalla */
+            position: relative;
+            top: -20px;
+        }
+        
+        @keyframes rotateImg {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.2); }
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @keyframes slideIn {
+            0% { transform: translateX(-100px); }
+            100% { transform: translateX(0); }
+        }
+        @keyframes floatForm {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-20px); }
         }
     </style>
 <body>
@@ -195,9 +209,11 @@ foreach ($payment_methods as $payment_method) {
             <p>¡Haz una diferencia real con tu donación!</p>
         </div>
         
-        <p id="hora_actual"></p>
         
-        <img id="img" data-dis-type="simultaneous">
+    <p id="hora_actual"></p>
+    
+    <img id="img" data-dis-type="simultaneous">
+  
     </form>
 
     <script>
