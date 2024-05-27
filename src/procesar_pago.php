@@ -239,7 +239,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="json-output">
         <?php echo $response; ?>
     </div>
-    <a class="back-link" href="#">Volver al formulario</a>
+    <a class="back-link" href="/index.php">Volver al formulario</a>
 </div>
 
 </body>
