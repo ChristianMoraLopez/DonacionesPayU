@@ -1,5 +1,6 @@
 <?php
 // Incluir los archivos necesarios de la biblioteca de PayU
+require_once './vendor/autoload.php';
 require_once './lib/PayU.php'; // Asegúrate de actualizar este camino a donde tienes las librerías de PayU
 
 // Configuración de credenciales de producción proporcionadas por PayU
