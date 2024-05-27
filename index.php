@@ -147,6 +147,9 @@ foreach ($payment_methods as $payment_method) {
             text-shadow: 0 0 20px rgba(255, 255, 255, 0.8); /* Sombra al texto */
             animation: fadeIn 2s ease-in-out; /* Animación de aparición */
         }
+        .fade {
+            animation: fadeInOut 1s ease-in-out; /* Animación de desvanecimiento */
+        }
         #img {
             max-width: 150px;
             width: 100%;
@@ -172,6 +175,11 @@ foreach ($payment_methods as $payment_method) {
             0% { opacity: 0; }
             100% { opacity: 1; }
         }
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
         @keyframes slideIn {
             0% { transform: translateX(-100px); }
             100% { transform: translateX(0); }
@@ -181,6 +189,7 @@ foreach ($payment_methods as $payment_method) {
             100% { transform: translateY(-20px); }
         }
     </style>
+</head>
 <body>
     <form action="src/procesar_pago.php" method="POST">
         <label for="nombre_completo">Nombre Completo:</label>
@@ -209,28 +218,29 @@ foreach ($payment_methods as $payment_method) {
             <p>¡Haz una diferencia real con tu donación!</p>
         </div>
         
+        <p id="hora_actual"></p>
         
-    <p id="hora_actual"></p>
-    
-    <img id="img" data-dis-type="simultaneous">
-  
+        <img id="img" data-dis-type="simultaneous">
     </form>
 
     <script>
-
         function actualizarHora() {
             var ahora = new Date();
             var horas = ahora.getHours().toString().padStart(2, '0');
             var minutos = ahora.getMinutes().toString().padStart(2, '0');
             var segundos = ahora.getSeconds().toString().padStart(2, '0');
             var horaActual = horas + ':' + minutos + ':' + segundos;
-
-            document.getElementById('hora_actual').textContent = 'Hora actual: ' + horaActual;
+            
+            var horaElemento = document.getElementById('hora_actual');
+            horaElemento.classList.remove('fade');
+            void horaElemento.offsetWidth;  // Reinicia la animación
+            horaElemento.classList.add('fade');
+            horaElemento.textContent = 'Hora actual: ' + horaActual;
         }
 
-  
         setInterval(actualizarHora, 1000);
     </script>
 </body>
 </html>
+
 
