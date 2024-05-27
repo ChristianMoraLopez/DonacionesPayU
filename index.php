@@ -173,7 +173,7 @@ foreach ($payment_methods as $payment_method) {
     </form>
 
     <script>
-        disintegrate.init();
+
         function actualizarHora() {
             var ahora = new Date();
             var horas = ahora.getHours().toString().padStart(2, '0');
@@ -184,11 +184,7 @@ foreach ($payment_methods as $payment_method) {
             document.getElementById('hora_actual').textContent = 'Hora actual: ' + horaActual;
         }
 
-        document.getElementById('img').addEventListener('click', e => {
-            const disObj = disintegrate.getDisObj(e.target);
-            disintegrate.createSimultaneousParticles(disObj);
-        });
-
+  
         setInterval(actualizarHora, 1000);
     </script>
 </body>
