@@ -45,6 +45,7 @@ foreach ($payment_methods as $payment_method) {
     $payment_method->id;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -57,26 +58,29 @@ foreach ($payment_methods as $payment_method) {
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #00101f; /* Color de fondo oscuro */
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden; /* Evita el desplazamiento vertical */
         }
         form {
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.1); /* Fondo semitransparente */
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1); /* Sombra con efecto de luz */
             max-width: 400px;
             width: 100%;
+            position: relative; /* Posicionamiento relativo para el reloj */
         }
         label {
             display: block;
             margin-bottom: 10px;
             font-weight: bold;
+            color: #fff; /* Color del texto */
         }
         input[type="text"],
         input[type="email"],
@@ -91,13 +95,15 @@ foreach ($payment_methods as $payment_method) {
             box-sizing: border-box;
             font-size: 16px;
             outline: none;
+            color: #333; /* Color del texto */
+            background-color: #f0f0f0; /* Color de fondo del formulario */
         }
         input[type="text"]:focus,
         input[type="email"]:focus,
         input[type="number"]:focus,
         select:focus,
         button:focus {
-            border-color: #007bff;
+            border-color: #007bff; /* Color del borde al enfocar */
         }
         button {
             background-color: #007bff;
@@ -122,12 +128,35 @@ foreach ($payment_methods as $payment_method) {
         .donate-real p {
             margin-top: 10px;
             font-size: 14px;
-            color: #555;
+            color: #eee; /* Color del texto */
         }
         #hora_actual {
             margin-top: 20px;
-            font-size: 14px;
+            font-size: 24px; /* Tamaño de fuente grande */
             text-align: center;
+            color: #fff; /* Color del texto */
+            position: relative; /* Posicionamiento relativo para los efectos */
+            overflow: hidden; /* Evita que el texto salga fuera del contenedor */
+            font-weight: bold;
+        }
+        #hora_actual::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, #007bff, #00ff00, #ff0000); /* Degradado de colores */
+            top: 50%;
+            left: 0;
+            animation: wave 2s linear infinite; /* Animación de onda */
+            transform: translateY(-50%);
+        }
+        @keyframes wave {
+            0% {
+                left: -100%; /* Comienza fuera del contenedor */
+            }
+            100% {
+                left: 100%; /* Termina fuera del contenedor */
+            }
         }
         #img {
             display: none;
@@ -138,7 +167,6 @@ foreach ($payment_methods as $payment_method) {
             background-position: center;
         }
     </style>
-</head>
 <body>
     <form action="src/procesar_pago.php" method="POST">
         <label for="nombre_completo">Nombre Completo:</label>
