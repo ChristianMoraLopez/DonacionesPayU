@@ -1,0 +1,20 @@
+{
+    "name": "christian/donaciones",
+    "description": "App para realizar donaciones a Christian Por medio de Pay U",
+    "type": "library",
+    "require": {
+        "nesbot/carbon": "3.x-dev"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Christian\\Donaciones\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Christian"
+        }
+    ],
+    "minimum-stability": "dev"
+}
