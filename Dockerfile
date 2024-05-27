@@ -1,12 +1,15 @@
 # Usa la imagen base oficial de PHP con Apache y PHP 8.2
 FROM php:8.2-apache
 
+# Instala extensiones necesarias
+RUN apt-get update && apt-get install -y \
+    unzip \
+    git \
+    libzip-dev \
+    && docker-php-ext-install zip
+
 # Instala Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Instala extensiones de PHP adicionales si es necesario
-# Ejemplo: mysqli, pdo_mysql
-RUN docker-php-ext-install mysqli pdo pdo_mysql
 
 # Establece el directorio de trabajo
 WORKDIR /var/www/html
