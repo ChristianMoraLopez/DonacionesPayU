@@ -54,7 +54,6 @@ foreach ($payment_methods as $payment_method) {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="Donaciones">
     <meta name="keywords" content="donaciones, payu, pagos">
-    <link rel="shortcut icon" href="https://christianmoralopez.github.io/images/logo.svg" />
     <title>Donaciones</title>
     <style>
         body {
@@ -153,14 +152,13 @@ foreach ($payment_methods as $payment_method) {
         }
         #img {
             max-width: 150px;
-            width: 100%;
+            width: 10%;
             height: auto;
             display: block;
             margin: 0 auto;
-            animation: rotateImg 10s linear infinite; /* Animación de rotación */
-            filter: hue-rotate(180deg) brightness(150%) saturate(150%); /* Filtros de imagen */
-            mix-blend-mode: screen; /* Modo de mezcla para efecto de pantalla */
+            animation: rotateImg 16s linear infinite; 
             position: relative;
+      
             top: -20px;
         }
         
@@ -221,7 +219,7 @@ foreach ($payment_methods as $payment_method) {
         
         <p id="hora_actual"></p>
         
-        <img id="img" data-dis-type="simultaneous">
+        <img id="img"  src= "https://christianmoralopez.github.io/images/logo.svg"  data-dis-type="simultaneous">
     </form>
 
     <script>
