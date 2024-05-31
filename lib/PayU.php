@@ -85,9 +85,9 @@ abstract class PayU {
 
 // Set credentials
 
-PayU::$apiKey = "4Vj8eK4rloUd272L48hsrarnUA"; // API Key de producción
-PayU::$apiLogin = "pRRXKOl8ikMmt9u"; // API Login de producción
-PayU::$merchantId = "508029"; // Merchant ID de producción
+PayU::$apiKey = "tsG2CYzQLRDpQhkj6wmj6h5siZ"; // API Key de producción
+PayU::$apiLogin = "5poAbwFB9ewb47Y"; // API Login de producción
+PayU::$merchantId = "1008897"; // Merchant ID de producción
 
 // Validate environment before beginning any operation
 Environment::validate();
