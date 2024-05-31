@@ -4,18 +4,25 @@ require_once './vendor/autoload.php';
 require_once './lib/PayU.php'; // Asegúrate de actualizar este camino a donde tienes las librerías de PayU
 
 // Configuración de credenciales de producción proporcionadas por PayU
-PayU::$apiKey = "4Vj8eK4rloUd272L48hsrarnUA"; // API Key de producción
-PayU::$apiLogin = "pRRXKOl8ikMmt9u"; // API Login de producción
-PayU::$merchantId = "508029"; // Merchant ID de producción
+PayU::$apiKey = "tsG2CYzQLRDpQhkj6wmj6h5siZ"; // API Key de producción
+PayU::$apiLogin = "5poAbwFB9ewb47Y"; // API Login de producción
+PayU::$merchantId = "1008897"; // Merchant ID de producción
 PayU::$language = SupportedLanguages::ES; // Idioma utilizado para mensajes de error
-PayU::$isTest = true; // Cambia a false si estás en modo producción
+PayU::$isTest = false; // Cambia a false si estás en modo producción
 
 // Configurar las URLs para el ambiente de producción
 $linkpruebas = "https://sandbox.api.payulatam.com/payments-api/4.0/service.cgi";
 $reportpruebas = "https://sandbox.api.payulatam.com/reports-api/4.0/service.cgi";
 
-Environment::setPaymentsCustomUrl($linkpruebas);
-Environment::setReportsCustomUrl($reportpruebas);
+//configurar URLs de producción
+
+$linksproduccion = "https://api.payulatam.com/payments-api/4.0/service.cgi";
+$reportproduccion = "https://api.payulatam.com/reports-api/4.0/service.cgi";
+
+Environment::setPaymentsCustomUrl($linksproduccion);
+Environment::setReportsCustomUrl($reportproduccion);
+
+
 
 // Parámetros para la consulta de bancos PSE
 $parameters = array(
@@ -211,7 +218,9 @@ foreach ($payment_methods as $payment_method) {
         <button type="submit">Donación Ficticia</button>
         
         <div class="donate-real">
-        <a href="https://biz.payulatam.com/B0f6501705D84B9"><img src="https://ecommerce.payulatam.com/img-secure-2015/boton_pagar_grande.png"></a>
+            <a href="https://biz.payulatam.com/B0f65017F0BD626" target="_blank">
+                <img src="https://ecommerce.payulatam.com/img-secure-2015/boton_pagar_mediano.png" alt="Botón de Donación Real">
+            </a>
             <p>¡Haz una diferencia real con tu donación!</p>
         </div>
         
