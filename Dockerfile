@@ -1,6 +1,14 @@
 # Usa la imagen base oficial de PHP con Apache y PHP 8.2
 FROM php:8.2-apache
 
+
+
+# Copiamos nuestro archivo de configuración personalizado
+COPY httpd.conf /usr/local/apache2/conf/httpd.conf
+
+# Establecemos el ServerName en el archivo de configuración de Apache para eliminar la advertencia
+RUN echo "ServerName localhost" >> /usr/local/apache2/conf/httpd.conf
+
 # Instala extensiones necesarias
 RUN apt-get update && apt-get install -y \
     unzip \
