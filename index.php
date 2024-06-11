@@ -218,9 +218,7 @@ foreach ($payment_methods as $payment_method) {
         <button type="submit">Donación Ficticia</button>
         
         <div class="donate-real">
-            <a href="https://biz.payulatam.com/B0f65017F0BD626" target="_blank">
-                <img src="https://ecommerce.payulatam.com/img-secure-2015/boton_pagar_mediano.png" alt="Botón de Donación Real">
-            </a>
+            <a href="https://biz.payulatam.com/B0f650147B1A412"><img src="https://ecommerce.payulatam.com/img-secure-2015/boton_pagar_grande.png"></a>
             <p>¡Haz una diferencia real con tu donación!</p>
         </div>
         
