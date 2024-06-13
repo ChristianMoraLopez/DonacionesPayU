@@ -1,19 +1,19 @@
 <?php
+require_once '../vendor/autoload.php';
 require_once '../lib/PayU.php';
 
-
 // Configuración de credenciales de producción proporcionadas por PayU
-PayU::$apiKey = "4Vj8eK4rloUd272L48hsrarnUA"; // API Key de producción
-PayU::$apiLogin = "pRRXKOl8ikMmt9u"; // API Login de producción
-PayU::$merchantId = "508029"; // Merchant ID de producción
+PayU::$apiKey = "tsG2CYzQLRDpQhkj6wmj6h5siZ"; // API Key de producción
+PayU::$apiLogin = "5poAbwFB9ewb47Y"; // API Login de producción
+PayU::$merchantId = "1008897"; // Merchant ID de producción
 PayU::$language = SupportedLanguages::ES; // Idioma utilizado para mensajes de error
-PayU::$isTest = true; // Cambia a false si estás en modo producción
+PayU::$isTest = false; // Cambia a false si estás en modo producción
 
-$linkpruebas = "https://sandbox.api.payulatam.com/payments-api/4.0/service.cgi";
-$reportpruebas = "https://sandbox.api.payulatam.com/reports-api/4.0/service.cgi";
-
-Environment::setPaymentsCustomUrl($linkpruebas);
-Environment::setReportsCustomUrl($reportpruebas);
+// Configurar las URLs para el ambiente de producción
+$linkproduccion = "https://api.payulatam.com/payments-api/4.0/service.cgi";
+$reportproduccion = "https://api.payulatam.com/reports-api/4.0/service.cgi";
+Environment::setPaymentsCustomUrl($linkproduccion);
+Environment::setReportsCustomUrl($reportproduccion);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre_completo = $_POST["nombre_completo"];
@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ],
         "transaction" => [
             "order" => [
-                "accountId" => "512321",
+                "accountId" => "1017706",
                 "referenceCode" => $referenceCode,
                 "description" => "Pago de donación",
                 "language" => "es",
@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 "fullName" => $nombre_completo,
                 "emailAddress" => $correo,
                 "contactPhone" => $telefono,
-                "dniNumber" => "123456789",
+                "dniNumber" => "1018441569",
                 "billingAddress" => [
                     "street1" => "Calle 93B",
                     "street2" => "17 25",
@@ -79,30 +79,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     "phone" => $telefono
                 ]
             ],
-            "creditCard" => [
-                "number" => "4097440000000004",
-                "securityCode" => "321",
-                "expirationDate" => "2025/12",
-                "name" => "APPROVED"
-            ],
-            "extraParameters" => [
-                "INSTALLMENTS_NUMBER" => 1
-            ],
             "type" => "AUTHORIZATION_AND_CAPTURE",
-            "paymentMethod" => "VISA",
+            "paymentMethod" => "NEQUI",
             "paymentCountry" => "CO",
             "deviceSessionId" => $deviceSessionId,
             "ipAddress" => $_SERVER['REMOTE_ADDR'],
             "cookie" => session_id(),
             "userAgent" => $_SERVER['HTTP_USER_AGENT']
         ],
-        "test" => true
+        "test" => false
     ];
 
     $json_data = json_encode($data);
 
     $options = [
-        CURLOPT_URL => $linkpruebas,
+        CURLOPT_URL => $linkproduccion,
         CURLOPT_POST => true,
         CURLOPT_POSTFIELDS => $json_data,
         CURLOPT_HTTPHEADER => [
@@ -124,9 +115,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Convertir la respuesta de la API a un array para facilitar su manipulación
     $response_data = json_decode($response, true);
-        // Mostrar los datos de la transacción (para propósitos de depuración)
-        //echo "<h2>Datos de la transacción:</h2>";
-        //echo "<pre>" . json_encode($data, JSON_PRETTY_PRINT) . "</pre>";
 } else {
     header("Location: index.html");
     exit();
@@ -244,5 +232,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 </body>
 </html>
-
-
