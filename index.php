@@ -1,58 +1,3 @@
-<?php
-// Incluir los archivos necesarios de la biblioteca de PayU
-require_once './vendor/autoload.php';
-require_once './lib/PayU.php'; // Asegúrate de actualizar este camino a donde tienes las librerías de PayU
-
-// Configuración de credenciales de producción proporcionadas por PayU
-PayU::$apiKey = "tsG2CYzQLRDpQhkj6wmj6h5siZ"; // API Key de producción
-PayU::$apiLogin = "5poAbwFB9ewb47Y"; // API Login de producción
-PayU::$merchantId = "1008897"; // Merchant ID de producción
-PayU::$language = SupportedLanguages::ES; // Idioma utilizado para mensajes de error
-PayU::$isTest = false; // Cambia a false si estás en modo producción
-
-// Configurar las URLs para el ambiente de producción
-$linkpruebas = "https://sandbox.api.payulatam.com/payments-api/4.0/service.cgi";
-$reportpruebas = "https://sandbox.api.payulatam.com/reports-api/4.0/service.cgi";
-
-//configurar URLs de producción
-
-$linksproduccion = "https://api.payulatam.com/payments-api/4.0/service.cgi";
-$reportproduccion = "https://api.payulatam.com/reports-api/4.0/service.cgi";
-
-Environment::setPaymentsCustomUrl($linksproduccion);
-Environment::setReportsCustomUrl($reportproduccion);
-
-
-
-// Parámetros para la consulta de bancos PSE
-$parameters = array(
-    // Ingresa aquí el nombre del método de pago.
-    PayUParameters::PAYMENT_METHOD => "PSE",
-    // Ingresa aquí el nombre del país.
-    PayUParameters::COUNTRY => PayUCountries::CO,
-);
-
-// Consulta de bancos PSE
-$array = PayUPayments::getPSEBanks($parameters);
-$banks = $array->banks;
-
-// Generar opciones para el select de bancos
-$options = '';
-foreach ($banks as $bank) {
-    $options .= '<option value="' . $bank->pseCode . '">' . $bank->description . '</option>';
-}
-
-// Consultar métodos de pago disponibles
-$array = PayUPayments::getPaymentMethods();
-$payment_methods = $array->paymentMethods;
-
-foreach ($payment_methods as $payment_method) {
-    $payment_method->country;
-    $payment_method->description;
-    $payment_method->id;
-}
-?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -75,7 +20,7 @@ foreach ($payment_methods as $payment_method) {
             overflow: hidden; /* Evita el desplazamiento vertical */
             perspective: 1000px; /* Perspectiva para las animaciones 3D */
         }
-        form {
+        form, #resumen {
             background-color: rgba(255, 255, 255, 0.1); /* Fondo semitransparente */
             padding: 20px;
             border-radius: 10px;
@@ -85,6 +30,10 @@ foreach ($payment_methods as $payment_method) {
             position: relative; /* Posicionamiento relativo para el reloj */
             transform-style: preserve-3d; /* Conservar la perspectiva en los elementos hijos */
             animation: floatForm 10s linear infinite alternate; /* Animación de flotar */
+            display: none; /* Ocultar inicialmente */
+        }
+        form {
+            display: block; /* Mostrar el formulario por defecto */
         }
         label {
             display: block;
@@ -165,8 +114,36 @@ foreach ($payment_methods as $payment_method) {
             margin: 0 auto;
             animation: rotateImg 16s linear infinite; 
             position: relative;
-      
             top: -20px;
+        }
+        #resumen h2 {
+            color: #fff;
+            text-align: center;
+            animation: fadeIn 2s ease-in-out; /* Animación de aparición */
+        }
+        #resumen p {
+            color: #fff;
+            font-size: 18px;
+            margin: 10px 0;
+            animation: fadeIn 2s ease-in-out; /* Animación de aparición */
+        }
+        #resumen button {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+            outline: none;
+            color: #333; /* Color del texto */
+            background-color: #f0f0f0; /* Color de fondo del formulario */
+            cursor: pointer;
+            transition: background-color 0.3s;
+            animation: pulse 2s 3 alternate; /* Animación de pulso */
+        }
+        #resumen button:hover {
+            background-color: #0056b3;
         }
         
         @keyframes rotateImg {
@@ -197,54 +174,87 @@ foreach ($payment_methods as $payment_method) {
     </style>
 </head>
 <body>
-    <form action="src/procesar_pago.php" method="POST">
-        <label for="nombre_completo">Nombre Completo:</label>
-        <input type="text" id="nombre_completo" name="nombre_completo" required>
-        
-        <label for="correo">Correo:</label>
-        <input type="email" id="correo" name="correo" required>
-        
-        <label for="telefono">Teléfono:</label>
-        <input type="text" id="telefono" name="telefono" required>
-        
-        <label for="monto">Monto:</label>
-        <input type="number" id="monto" name="monto" required>
-        
-        <label for="banco">Banco:</label>
-        <select id="banco" name="banco" required>
-            <?php echo $options; ?>
-        </select>
-        
-        <button type="submit">Donación Ficticia</button>
-        
-        <div class="donate-real">
-            <a href="https://biz.payulatam.com/B0f650147B1A412"><img src="https://ecommerce.payulatam.com/img-secure-2015/boton_pagar_grande.png"></a>
-            <p>¡Haz una diferencia real con tu donación!</p>
-        </div>
-        
-        <p id="hora_actual"></p>
-        
-        <img id="img"  src= "https://christianmoralopez.github.io/images/logo.svg"  data-dis-type="simultaneous">
-    </form>
 
-    <script>
-        function actualizarHora() {
-            var ahora = new Date();
-            var horas = ahora.getHours().toString().padStart(2, '0');
-            var minutos = ahora.getMinutes().toString().padStart(2, '0');
-            var segundos = ahora.getSeconds().toString().padStart(2, '0');
-            var horaActual = horas + ':' + minutos + ':' + segundos;
-            
-            var horaElemento = document.getElementById('hora_actual');
-            horaElemento.classList.remove('fade');
-            void horaElemento.offsetWidth;  // Reinicia la animación
-            horaElemento.classList.add('fade');
-            horaElemento.textContent = 'Hora actual: ' + horaActual;
-        }
+<form id="paymentForm" action="src/procesar_pago.php" method="POST">
+    <label for="nombre_completo">Nombre Completo:</label>
+    <input type="text" id="nombre_completo" name="nombre_completo" required>
+    
+    <label for="correo">Correo:</label>
+    <input type="email" id="correo" name="correo" required>
+    
+    <label for="telefono">Teléfono:</label>
+    <input type="text" id="telefono" name="telefono" required>
+    
+    <label for="monto">Monto:</label>
+    <input type="number" id="monto" name="monto" required>
+    
+    <button type="button" onclick="mostrarResumen()">Mostrar Resumen</button>
+    
+    <div class="donate-real">
+        <a href="https://biz.payulatam.com/B0f650147B1A412"><img src="https://ecommerce.payulatam.com/img-secure-2015/boton_pagar_grande.png"></a>
+        <p>¡Haz una diferencia real con tu donación!</p>
+    </div>
+    
+    <p id="hora_actual"></p>
+    
+    <img id="img" src="https://christianmoralopez.github.io/images/logo.svg" data-dis-type="simultaneous">
+</form>
 
-        setInterval(actualizarHora, 1000);
-    </script>
+<div id="resumen" style="display:none;">
+    <h2>Resumen de la Transacción</h2>
+    <p><strong>Nombre Completo:</strong> <span id="resumen_nombre"></span></p>
+    <p><strong>Correo:</strong> <span id="resumen_correo"></span></p>
+    <p><strong>Teléfono:</strong> <span id="resumen_telefono"></span></p>
+    <p><strong>Monto:</strong> <span id="resumen_monto"></span></p>
+    <button type="button" onclick="confirmarPago()">Confirmar y Continuar con el Pago</button>
+    <button type="button" onclick="regresarFormulario()">Regresar y Corregir</button>
+</div>
+
+<script>
+    function actualizarHora() {
+        var ahora = new Date();
+        var horas = ahora.getHours().toString().padStart(2, '0');
+        var minutos = ahora.getMinutes().toString().padStart(2, '0');
+        var segundos = ahora.getSeconds().toString().padStart(2, '0');
+        var horaActual = horas + ':' + minutos + ':' + segundos;
+        
+        var horaElemento = document.getElementById('hora_actual');
+        horaElemento.classList.remove('fade');
+        void horaElemento.offsetWidth;  // Reinicia la animación
+        horaElemento.classList.add('fade');
+        horaElemento.textContent = 'Hora actual: ' + horaActual;
+    }
+
+    setInterval(actualizarHora, 1000);
+
+    function mostrarResumen() {
+        var nombre = document.getElementById('nombre_completo').value;
+        var correo = document.getElementById('correo').value;
+        var telefono = document.getElementById('telefono').value;
+        var monto = document.getElementById('monto').value;
+
+        document.getElementById('resumen_nombre').textContent = nombre;
+        document.getElementById('resumen_correo').textContent = correo;
+        document.getElementById('resumen_telefono').textContent = telefono;
+        document.getElementById('resumen_monto').textContent = monto;
+
+        document.getElementById('paymentForm').style.display = 'none';
+        var resumen = document.getElementById('resumen');
+        resumen.style.display = 'block';
+        
+        resumen.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function confirmarPago() {
+        document.getElementById('paymentForm').submit();
+    }
+
+    function regresarFormulario() {
+        document.getElementById('resumen').style.display = 'none';
+        document.getElementById('paymentForm').style.display = 'block';
+        document.getElementById('paymentForm').scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
 </body>
 </html>
-
-

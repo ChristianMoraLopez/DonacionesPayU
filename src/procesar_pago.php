@@ -111,12 +111,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Error de conexión: " . curl_error($curl));
     }
 
+    
+// Verifica si la respuesta contiene "SUCCESS"
+if (strpos($response, 'SUCCESS') !== false) {
+    $response = "SUCCESS";
+
+} else {
+    $response = "ERROR";
+}
+
     curl_close($curl);
 
     // Convertir la respuesta de la API a un array para facilitar su manipulación
     $response_data = json_decode($response, true);
 } else {
-    header("Location: index.html");
+    header("Location: index.php");
     exit();
 }
 ?>
@@ -129,106 +138,98 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Respuesta de Transacción</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
         }
-
         .container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 30px;
+            max-width: 600px;
+            margin: 20px auto;
             background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-            animation: fadeIn 1s ease-out;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        .title {
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 30px;
-            text-align: center;
-            color: #333;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .content {
-            margin-bottom: 25px;
-            animation: slideIn 1s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .json-output {
-            background-color: #f9f9f9;
+        .left-column {
+            background-color: #007bff;
+            color: #fff;
             padding: 20px;
-            border-radius: 5px;
-            white-space: pre-wrap;
-            font-family: 'Courier New', Courier, monospace;
-            animation: fadeIn 1s ease-out;
-            overflow-y: auto;
-            max-height: 200px;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
-            color: #333;
-            font-size: 14px;
-            line-height: 1.5;
+            text-align: center;
         }
-
+        .left-column p {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+        .right-column {
+            padding: 20px;
+        }
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .important {
+            color: #f00;
+            font-weight: bold;
+        }
+        .payment-method {
+            font-size: 20px;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .instructions {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        .instructions p {
+            margin: 10px 0;
+        }
+        .summary {
+            margin-top: 20px;
+        }
+        .summary p {
+            margin: 10px 0;
+        }
         .back-link {
             display: block;
-            margin-top: 30px;
             text-align: center;
-            color: #666;
-            font-size: 18px;
+            margin-top: 20px;
             text-decoration: none;
-            transition: color 0.3s;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 5px;
-        }
-
-        .back-link:hover {
-            color: #333;
+            color: #007bff;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="title">Transacción Aprobada</div>
-    <div class="content"><strong>Nombre:</strong> <?php echo $nombre_completo ?></div>
-    <div class="content"><strong>Correo:</strong> <?php echo $correo ?> </div>
-    <div class="content"><strong>Respuesta de la API:</strong></div>
-    <div class="content">Se te enviará un correo con la transacción.</div>
-    <div class="content"><strong>Datos de la transacción:</strong></div>
-    <div class="json-output">
-        <?php echo $json_data; ?>
+    <div class="left-column">
+        <p>Resumen de la transacción:</p>
+        <p>Estado: <?php echo $estado_transaccion; ?></p>
+        <p>Valor: <?php echo $monto; ?></p>
     </div>
-    <div class="content"><strong>Resultado de la transacción:</strong></div>
-    <div class="json-output">
-        <?php echo $response; ?>
+    <div class="right-column">
+        <div class="title">Transacción Aprobada</div>
+        <p>Hola <strong><?php echo $nombre_completo; ?></strong>, tu transacción ha sido aprobada. A continuación, gracias por tu donación.</p>
+        <p class="important">Importante: tienes 35 minutos para aprobar tu pago</p>
+        <p class="payment-method">Medio de pago: Nequi</p>
+        <p>Nombre: <?php echo $nombre_completo; ?></p>
+        <p>Teléfono: <?php echo $telefono; ?></p>
+        <p>Por favor, sigue las instrucciones que te llegaron a tu celular para completar tu pago.</p>
+        <div class="instructions">
+            <p>Instrucciones:</p>
+            <ol>
+                <li>Abre la aplicación Nequi en tu celular</li>
+                <li>Revisa las notificaciones de la aplicación para confirmar el pago.</li>
+                <li>Recibe la confirmación en tu correo electrónico</li>
+            </ol>
+        </div>
+        <a class="back-link" href="/index.php">Volver al formulario</a>
     </div>
-    <a class="back-link" href="/index.php">Volver al formulario</a>
 </div>
 
 </body>
 </html>
+
