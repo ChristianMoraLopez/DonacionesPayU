@@ -188,7 +188,8 @@
     <label for="monto">Monto:</label>
     <input type="number" id="monto" name="monto" required>
     
-    <button type="button" onclick="mostrarResumen()">Mostrar Resumen</button>
+    <button type="button" onclick="mostrarResumen()">Pagar con nequi
+    </button>
     
     <div class="donate-real">
         <a href="https://biz.payulatam.com/B0f650147B1A412"><img src="https://ecommerce.payulatam.com/img-secure-2015/boton_pagar_grande.png"></a>

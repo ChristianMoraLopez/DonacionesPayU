@@ -111,14 +111,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Error de conexión: " . curl_error($curl));
     }
 
-    
-// Verifica si la respuesta contiene "SUCCESS"
-if (strpos($response, 'SUCCESS') !== false) {
-    $response = "SUCCESS";
 
-} else {
-    $response = "ERROR";
-}
+    // Verifica si la respuesta contiene "SUCCESS"
+    if (strpos($response, 'SUCCESS') !== false) {
+        $response = "SUCCESS";
+    } else {
+        $response = "ERROR";
+    }
 
     curl_close($curl);
 
@@ -129,107 +128,292 @@ if (strpos($response, 'SUCCESS') !== false) {
     exit();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Respuesta de Transacción</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Lobster&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #ece9e6, #ffffff);
             margin: 0;
             padding: 0;
-        }
-        .container {
-            max-width: 600px;
-            margin: 20px auto;
-            background-color: #fff;
-            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             overflow: hidden;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            max-width: 900px;
+            width: 100%;
+            margin: 20px;
+            background-color: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 1.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .left-column, .right-column {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
         .left-column {
-            background-color: #007bff;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
+            flex: 3;
+            background: linear-gradient(135deg, #ff6f61, #de6262);
+            color: white;
+            padding: 60px;
+            position: relative;
+            overflow: hidden;
         }
-        .left-column p {
-            margin: 10px 0;
-            font-size: 18px;
+
+        .left-column::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(-30deg);
         }
+
         .right-column {
-            padding: 20px;
+            flex: 2;
+            background-color: #f1f1f1;
+            border-left: 2px solid #eee;
+            text-align: center;
+            position: relative;
         }
+
+        .right-column::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f1f1f1, #e1e1e1);
+            transform: skewX(-10deg);
+            z-index: -1;
+        }
+
         .title {
-            font-size: 28px;
-            font-weight: bold;
+            font-family: 'Lobster', cursive;
+            font-size: 40px;
+            font-weight: 700;
             margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+            animation: fadeInTitle 1s ease 0.5s forwards;
+            opacity: 0;
         }
+
+        @keyframes fadeInTitle {
+            to {
+                opacity: 1;
+            }
+        }
+
         .important {
-            color: #f00;
-            font-weight: bold;
-        }
-        .payment-method {
+            color: #ffeb3b;
+            font-weight: 700;
+            margin-bottom: 20px;
             font-size: 20px;
-            font-weight: bold;
-            color: #555;
-            margin-bottom: 10px;
         }
+
+        .payment-method {
+            font-size: 24px;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            animation: fadeInUp 1s ease 1s forwards;
+            opacity: 0;
+        }
+
+        .payment-method img {
+            margin-left: 10px;
+            width: 50px;
+            height: auto;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .instructions {
-            margin-top: 20px;
-            font-size: 16px;
+            margin-top: 30px;
+            font-size: 18px;
+            color: #fff;
         }
+
         .instructions p {
-            margin: 10px 0;
+            margin-bottom: 10px;
+            font-weight: 500;
         }
+
+        .instructions ol {
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        .instructions li {
+            margin-bottom: 15px;
+            padding-left: 50px;
+            position: relative;
+            font-weight: 400;
+        }
+
+        .instructions li::before {
+            content: "";
+            width: 30px;
+            height: 30px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: inline-block;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .instructions li:nth-child(1)::before {
+            background-image: url('images/nequi.svg');
+        }
+
+        .instructions li:nth-child(2)::before {
+            background-image: url('images/notificación.svg');
+        }
+
+        .instructions li:nth-child(3)::before {
+            background-image: url('images/correo.svg');
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 40px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #3498db;
+            background-color: #fff;
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+            animation: fadeInUp 1s ease 1.2s forwards;
+            opacity: 0;
+        }
+
+        .back-link:hover {
+            background-color: #2980b9;
+            color: #fff;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+
         .summary {
             margin-top: 20px;
+            color: #555;
+            animation: fadeInRight 1s ease 0.5s forwards;
+            opacity: 0;
         }
+
         .summary p {
-            margin: 10px 0;
+            margin: 15px 0;
+            font-size: 20px;
+            font-weight: 500;
         }
-        .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
-            text-decoration: none;
-            color: #007bff;
-            font-size: 18px;
+
+        .summary p strong {
+            color: #333;
+        }
+
+        @keyframes fadeInRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .summary p::before {
+            content: "\f058";
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            margin-right: 10px;
+            color: #3498db;
         }
     </style>
 </head>
+
 <body>
-
-<div class="container">
-    <div class="left-column">
-        <p>Resumen de la transacción:</p>
-        <p>Estado: <?php echo $estado_transaccion; ?></p>
-        <p>Valor: <?php echo $monto; ?></p>
-    </div>
-    <div class="right-column">
-        <div class="title">Transacción Aprobada</div>
-        <p>Hola <strong><?php echo $nombre_completo; ?></strong>, tu transacción ha sido aprobada. A continuación, gracias por tu donación.</p>
-        <p class="important">Importante: tienes 35 minutos para aprobar tu pago</p>
-        <p class="payment-method">Medio de pago: Nequi</p>
-        <p>Nombre: <?php echo $nombre_completo; ?></p>
-        <p>Teléfono: <?php echo $telefono; ?></p>
-        <p>Por favor, sigue las instrucciones que te llegaron a tu celular para completar tu pago.</p>
-        <div class="instructions">
-            <p>Instrucciones:</p>
-            <ol>
-                <li>Abre la aplicación Nequi en tu celular</li>
-                <li>Revisa las notificaciones de la aplicación para confirmar el pago.</li>
-                <li>Recibe la confirmación en tu correo electrónico</li>
-            </ol>
+    <div class="container">
+        <div class="left-column">
+            <div class="title">Transacción Aprobada</div>
+            <p>Hola <strong><?php echo $nombre_completo; ?></strong>, tu transacción ha sido aprobada. Gracias por tu donación.</p>
+            <p class="important">Importante: tienes 35 minutos para aprobar tu pago</p>
+            <p class="payment-method">Medio de pago:
+                <img src="images/Nequi_id-T1XPwUY_1.svg" alt="Nequi">
+            </p>
+            <p>Nombre: <?php echo $nombre_completo; ?></p>
+            <p>Teléfono: <?php echo $telefono; ?></p>
+            <p>Por favor, sigue las instrucciones que te llegaron a tu celular para completar tu pago.</p>
+            <div class="instructions">
+                <p>Instrucciones:</p>
+                <ol>
+                    <li>
+                        Abre la aplicación Nequi en tu celular
+                    </li>
+                    <li>
+                        Revisa las notificaciones de la aplicación para confirmar el pago.
+                    </li>
+                    <li>
+                        Recibe la confirmación en tu correo electrónico
+                    </li>
+                </ol>
+            </div>
+            <a class="back-link" href="../index.php">Volver al formulario</a>
         </div>
-        <a class="back-link" href="/index.php">Volver al formulario</a>
+        <div class="right-column">
+            <p>Resumen de la transacción:</p>
+            <div class="summary">
+                <p><strong>Estado:</strong> <?php echo $response; ?></p>
+                <p><strong>Valor:</strong> <?php echo $monto; ?></p>
+            </div>
+        </div>
     </div>
-</div>
-
 </body>
-</html>
 
+</html>
