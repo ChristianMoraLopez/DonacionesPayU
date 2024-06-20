@@ -137,6 +137,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Respuesta de Transacción</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Lobster&display=swap" rel="stylesheet">
     <style>
+        * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    } 
     body {
         font-family: 'Roboto', sans-serif;
         background: linear-gradient(135deg, #ece9e6, #ffffff);
@@ -184,6 +189,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         display: flex;
         flex-direction: column;
         justify-content: center;
+        box-sizing: border-box;
     }
 
     .left-column {
@@ -377,12 +383,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     @media (max-width: 768px) {
+        
         .container {
+            height: -webkit-fill-available;
             flex-direction: column;
+            max-width: 100%;
+           
+            overflow-y: auto;
         }
-
+.resume-container{
+    scale: 0.7 ;
+}
         .left-column, .right-column {
             padding: 20px;
+            width: 100%;
         }
 
         .left-column {
@@ -416,8 +430,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     @media (max-width: 480px) {
+
+        
         .left-column, .right-column {
             padding: 10px;
+            width: 100%;
         }
 
         .left-column {
@@ -450,36 +467,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 </style>
-
 </head>
 
 <body>
     <div class="container">
         <div class="left-column">
-            <div class="title">Transacción Aprobada</div>
-            <p>Hola <strong><?php echo $nombre_completo; ?></strong>, tu transacción ha sido aprobada. Gracias por tu donación.</p>
-            <p class="important">Importante: tienes 35 minutos para aprobar tu pago</p>
-            <p class="payment-method">Medio de pago:
-                <img src="images/Nequi_id-T1XPwUY_1.svg" alt="Nequi">
-            </p>
-            <p>Nombre: <?php echo $nombre_completo; ?></p>
-            <p>Teléfono: <?php echo $telefono; ?></p>
-            <p>Por favor, sigue las instrucciones que te llegaron a tu celular para completar tu pago.</p>
-            <div class="instructions">
-                <p>Instrucciones:</p>
-                <ol>
-                    <li>
-                        Abre la aplicación Nequi en tu celular
-                    </li>
-                    <li>
-                        Revisa las notificaciones de la aplicación para confirmar el pago.
-                    </li>
-                    <li>
-                        Recibe la confirmación en tu correo electrónico
-                    </li>
-                </ol>
+            <div class="resume-container">
+                <div class="title">Transacción Aprobada</div>
+                <p>Hola <strong><?php echo $nombre_completo; ?></strong>, tu transacción ha sido aprobada. Gracias por tu donación.</p>
+                <p class="important">Importante: tienes 35 minutos para aprobar tu pago</p>
+                <p class="payment-method">Medio de pago:
+                    <img src="images/Nequi_id-T1XPwUY_1.svg" alt="Nequi">
+                </p>
+                <p>Nombre: <?php echo $nombre_completo; ?></p>
+                <p>Teléfono: <?php echo $telefono; ?></p>
+                <p>Por favor, sigue las instrucciones que te llegaron a tu celular para completar tu pago.</p>
+                <div class="instructions">
+                    <p>Instrucciones:</p>
+                    <ol>
+                        <li>
+                            Abre la aplicación Nequi en tu celular
+                        </li>
+                        <li>
+                            Revisa las notificaciones de la aplicación para confirmar el pago.
+                        </li>
+                        <li>
+                            Recibe la confirmación en tu correo electrónico
+                        </li>
+                    </ol>
+                </div>
+                <a class="back-link" href="../index.php">Volver al formulario</a>
             </div>
-            <a class="back-link" href="../index.php">Volver al formulario</a>
         </div>
         <div class="right-column">
             <p>Resumen de la transacción:</p>
@@ -492,3 +510,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </body>
 
 </html>
+  
