@@ -137,245 +137,320 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Respuesta de Transacción</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Lobster&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #ece9e6, #ffffff);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-        }
+    body {
+        font-family: 'Roboto', sans-serif;
+        background: linear-gradient(135deg, #ece9e6, #ffffff);
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+    }
 
+    .container {
+        display: flex;
+        flex-direction: row;
+        max-width: 900px;
+        width: 100%;
+        margin: 20px;
+        background-color: #fff;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        animation: fadeIn 1.5s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .container:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .left-column, .right-column {
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .left-column {
+        flex: 3;
+        background: linear-gradient(135deg, #ff6f61, #de6262);
+        color: white;
+        padding: 60px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .left-column::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
+        transform: rotate(-30deg);
+    }
+
+    .right-column {
+        flex: 2;
+        background-color: #f1f1f1;
+        border-left: 2px solid #eee;
+        text-align: center;
+        position: relative;
+    }
+
+    .right-column::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #f1f1f1, #e1e1e1);
+        transform: skewX(-10deg);
+        z-index: -1;
+    }
+
+    .title {
+        font-family: 'Lobster', cursive;
+        font-size: 40px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: #fff;
+        text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+        animation: fadeInTitle 1s ease 0.5s forwards;
+        opacity: 0;
+    }
+
+    @keyframes fadeInTitle {
+        to {
+            opacity: 1;
+        }
+    }
+
+    .important {
+        color: #ffeb3b;
+        font-weight: 700;
+        margin-bottom: 20px;
+        font-size: 20px;
+    }
+
+    .payment-method {
+        font-size: 24px;
+        font-weight: 500;
+        color: #fff;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        animation: fadeInUp 1s ease 1s forwards;
+        opacity: 0;
+    }
+
+    .payment-method img {
+        margin-left: 10px;
+        width: 50px;
+        height: auto;
+    }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .instructions {
+        margin-top: 30px;
+        font-size: 18px;
+        color: #fff;
+    }
+
+    .instructions p {
+        margin-bottom: 10px;
+        font-weight: 500;
+    }
+
+    .instructions ol {
+        padding-left: 20px;
+        list-style: none;
+    }
+
+    .instructions li {
+        margin-bottom: 15px;
+        padding-left: 50px;
+        position: relative;
+        font-weight: 400;
+    }
+
+    .instructions li::before {
+        content: "";
+        width: 30px;
+        height: 30px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        display: inline-block;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .instructions li:nth-child(1)::before {
+        background-image: url('images/nequi.svg');
+    }
+
+    .instructions li:nth-child(2)::before {
+        background-image: url('images/notificación.svg');
+    }
+
+    .instructions li:nth-child(3)::before {
+        background-image: url('images/correo.svg');
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-top: 40px;
+        text-decoration: none;
+        font-size: 20px;
+        color: #3498db;
+        background-color: #fff;
+        padding: 15px 30px;
+        border-radius: 50px;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+        animation: fadeInUp 1s ease 1.2s forwards;
+        opacity: 0;
+    }
+
+    .back-link:hover {
+        background-color: #2980b9;
+        color: #fff;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        transform: translateY(-5px);
+    }
+
+    .summary {
+        margin-top: 20px;
+        color: #555;
+        animation: fadeInRight 1s ease 0.5s forwards;
+        opacity: 0;
+    }
+
+    .summary p {
+        margin: 15px 0;
+        font-size: 20px;
+        font-weight: 500;
+    }
+
+    .summary p strong {
+        color: #333;
+    }
+
+    @keyframes fadeInRight {
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .summary p::before {
+        content: "\f058";
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        margin-right: 10px;
+        color: #3498db;
+    }
+
+    @media (max-width: 768px) {
         .container {
-            display: flex;
-            flex-direction: row;
-            max-width: 900px;
-            width: 100%;
-            margin: 20px;
-            background-color: #fff;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: fadeIn 1.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .container:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+            flex-direction: column;
         }
 
         .left-column, .right-column {
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            padding: 20px;
         }
 
         .left-column {
-            flex: 3;
-            background: linear-gradient(135deg, #ff6f61, #de6262);
-            color: white;
-            padding: 60px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .left-column::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
-            transform: rotate(-30deg);
-        }
-
-        .right-column {
-            flex: 2;
-            background-color: #f1f1f1;
-            border-left: 2px solid #eee;
-            text-align: center;
-            position: relative;
-        }
-
-        .right-column::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #f1f1f1, #e1e1e1);
-            transform: skewX(-10deg);
-            z-index: -1;
+            padding: 40px 20px;
         }
 
         .title {
-            font-family: 'Lobster', cursive;
-            font-size: 40px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: #fff;
-            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
-            animation: fadeInTitle 1s ease 0.5s forwards;
-            opacity: 0;
-        }
-
-        @keyframes fadeInTitle {
-            to {
-                opacity: 1;
-            }
+            font-size: 32px;
         }
 
         .important {
-            color: #ffeb3b;
-            font-weight: 700;
-            margin-bottom: 20px;
-            font-size: 20px;
+            font-size: 18px;
         }
 
         .payment-method {
-            font-size: 24px;
-            font-weight: 500;
-            color: #fff;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            animation: fadeInUp 1s ease 1s forwards;
-            opacity: 0;
-        }
-
-        .payment-method img {
-            margin-left: 10px;
-            width: 50px;
-            height: auto;
-        }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            font-size: 20px;
         }
 
         .instructions {
-            margin-top: 30px;
-            font-size: 18px;
-            color: #fff;
-        }
-
-        .instructions p {
-            margin-bottom: 10px;
-            font-weight: 500;
-        }
-
-        .instructions ol {
-            padding-left: 20px;
-            list-style: none;
-        }
-
-        .instructions li {
-            margin-bottom: 15px;
-            padding-left: 50px;
-            position: relative;
-            font-weight: 400;
-        }
-
-        .instructions li::before {
-            content: "";
-            width: 30px;
-            height: 30px;
-            background-size: cover;
-            background-repeat: no-repeat;
-            display: inline-block;
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .instructions li:nth-child(1)::before {
-            background-image: url('images/nequi.svg');
-        }
-
-        .instructions li:nth-child(2)::before {
-            background-image: url('images/notificación.svg');
-        }
-
-        .instructions li:nth-child(3)::before {
-            background-image: url('images/correo.svg');
+            font-size: 16px;
         }
 
         .back-link {
-            display: inline-block;
-            margin-top: 40px;
-            text-decoration: none;
-            font-size: 20px;
-            color: #3498db;
-            background-color: #fff;
-            padding: 15px 30px;
-            border-radius: 50px;
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
-            animation: fadeInUp 1s ease 1.2s forwards;
-            opacity: 0;
-        }
-
-        .back-link:hover {
-            background-color: #2980b9;
-            color: #fff;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
-            transform: translateY(-5px);
-        }
-
-        .summary {
-            margin-top: 20px;
-            color: #555;
-            animation: fadeInRight 1s ease 0.5s forwards;
-            opacity: 0;
+            font-size: 18px;
+            padding: 10px 20px;
         }
 
         .summary p {
-            margin: 15px 0;
-            font-size: 20px;
-            font-weight: 500;
+            font-size: 18px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .left-column, .right-column {
+            padding: 10px;
         }
 
-        .summary p strong {
-            color: #333;
+        .left-column {
+            padding: 20px 10px;
         }
 
-        @keyframes fadeInRight {
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        .title {
+            font-size: 24px;
         }
 
-        .summary p::before {
-            content: "\f058";
-            font-family: 'Font Awesome 5 Free';
-            font-weight: 900;
-            margin-right: 10px;
-            color: #3498db;
+        .important {
+            font-size: 16px;
         }
-    </style>
+
+        .payment-method {
+            font-size: 18px;
+        }
+
+        .instructions {
+            font-size: 14px;
+        }
+
+        .back-link {
+            font-size: 16px;
+            padding: 8px 16px;
+        }
+
+        .summary p {
+            font-size: 16px;
+        }
+    }
+</style>
+
 </head>
 
 <body>
